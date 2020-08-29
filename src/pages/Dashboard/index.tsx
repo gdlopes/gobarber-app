@@ -1,5 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react';
 
+import DefaultAvatar from 'react-native-user-avatar';
 import Icon from 'react-native-vector-icons/Feather';
 import { useAuth } from '../../hooks/auth';
 import { useNavigation } from '@react-navigation/core';
@@ -30,7 +31,7 @@ export interface Provider {
 
 const Dashboard: React.FC = () => {
   const [providers, setProviders] = useState<Provider[]>([]);
-  const { user } = useAuth();
+  const { user, signUp } = useAuth();
   const { navigate } = useNavigation();
 
   useEffect(() => {
@@ -40,7 +41,8 @@ const Dashboard: React.FC = () => {
   }, []);
 
   const navigateToProfile = useCallback(() => {
-    navigate('Profile');
+    signUp();
+    // navigate('Profile');
   }, [navigate]);
 
   const navigateToCreateAppointment = useCallback(
@@ -73,7 +75,11 @@ const Dashboard: React.FC = () => {
           <ProviderContainer
             onPress={() => navigateToCreateAppointment(provider.id)}
           >
-            <ProviderAvatar source={{ uri: provider.avatar_url }} />
+            {provider.avatar_url ? (
+              <ProviderAvatar source={{ uri: provider.avatar_url }} />
+            ) : (
+              <DefaultAvatar size={70} name={provider.name} bgColor="#ff9000" />
+            )}
 
             <ProviderInfo>
               <ProviderName>{provider.name}</ProviderName>

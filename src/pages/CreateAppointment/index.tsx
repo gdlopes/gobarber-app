@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/core';
 import { Platform, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
+import DefaultAvatar from 'react-native-user-avatar';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
 
@@ -183,7 +184,17 @@ const CreateAppointment: React.FC = () => {
                 onPress={() => handleSelectedProvider(provider.id)}
                 selected={provider.id === selectedProvider}
               >
-                <ProviderAvatar source={{ uri: provider.avatar_url }} />
+                {provider.avatar_url ? (
+                  <ProviderAvatar source={{ uri: provider.avatar_url }} />
+                ) : (
+                  <DefaultAvatar
+                    size={35}
+                    name={provider.name}
+                    bgColor={
+                      provider.id === selectedProvider ? '#3e3b47' : '#ff9000'
+                    }
+                  />
+                )}
                 <ProviderName selected={provider.id === selectedProvider}>
                   {provider.name}
                 </ProviderName>
